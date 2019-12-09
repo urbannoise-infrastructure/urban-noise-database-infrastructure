@@ -1,19 +1,24 @@
-data "azurerm_cosmosdb_account" "example" {
-  name                = "tfex-cosmosdb-account"
-  resource_group_name = "tfex-cosmosdb-account-rg"
+resource "azurerm_resource_group" "urban_noise_rg" {
+  name     = "urbannoise-db-account"
+  location = "West Europe"
 }
 
-resource "azurerm_cosmosdb_mongo_database" "example" {
-  name                = "tfex-cosmos-mongo-db"
-  resource_group_name = "${data.azurerm_cosmosdb_account.example.resource_group_name}"
-  account_name        = "${data.azurerm_cosmosdb_account.example.name}"
+data "azurerm_cosmosdb_account" "urbannoise-db-account-rg" {
+  name                = "${data.azurerm_resource_group.urban_noise_rg.name}"
+  resource_group_name = "urbannoise-db-account-rg"
 }
 
-resource "azurerm_cosmosdb_mongo_collection" "example" {
-  name                = "tfex-cosmos-mongo-db"
-  resource_group_name = "${data.azurerm_cosmosdb_account.example.resource_group_name}"
-  account_name        = "${data.azurerm_cosmosdb_account.example.name}"
-  database_name       = "${azurerm_cosmosdb_mongo_database.example.name}"
+resource "azurerm_cosmosdb_mongo_database" "urban-noise-db" {
+  name                = "urban-noise-db"
+  resource_group_name = "${data.azurerm_cosmosdb_account.urbannoise-db-account-rg.resource_group_name}"
+  account_name        = "${data.azurerm_cosmosdb_account.urbannoise-db-account-rg.name}"
+}
+
+resource "azurerm_cosmosdb_mongo_collection" "generic-components-collection" {
+  name                = "generic-components"
+  resource_group_name = "${data.azurerm_cosmosdb_account.urbannoise-db-account-rg.resource_group_name}"
+  account_name        = "${data.azurerm_cosmosdb_account.urbannoise-db-account-rg.name}"
+  database_name       = "${azurerm_cosmosdb_mongo_database.urban-noise-db.name}"
 
   default_ttl_seconds = "777"
   shard_key           = "uniqueKey"
