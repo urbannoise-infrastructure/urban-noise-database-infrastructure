@@ -4,7 +4,7 @@ resource "azurerm_resource_group" "urban_noise_rg" {
 }
 
 data "azurerm_cosmosdb_account" "urbannoise-db-account-rg" {
-  name                = "${data.azurerm_resource_group.urban_noise_rg.name}"
+  name                = "${azurerm_resource_group.urban_noise_rg.name}"
   resource_group_name = "urbannoise-db-account-rg"
 }
 
