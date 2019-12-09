@@ -39,8 +39,8 @@ resource "azurerm_cosmosdb_mongo_database" "urban-noise-db" {
 
 resource "azurerm_cosmosdb_mongo_collection" "generic-components-collection" {
   name                = "generic-components"
-  resource_group_name = "${data.azurerm_cosmosdb_account.urbannoise-db-account.resource_group_name}"
-  account_name        = "${data.azurerm_cosmosdb_account.urbannoise-db-account.name}"
+  resource_group_name = "${azurerm_cosmosdb_account.urbannoise-db-account.resource_group_name}"
+  account_name        = "${azurerm_cosmosdb_account.urbannoise-db-account.name}"
   database_name       = "${azurerm_cosmosdb_mongo_database.urban-noise-db.name}"
 
   default_ttl_seconds = "777"
