@@ -16,8 +16,8 @@ resource "azurerm_cosmosdb_account" "urbannoise-db-account" {
 
   consistency_policy {
     consistency_level       = "BoundedStaleness"
-    max_interval_in_seconds = 10
-    max_staleness_prefix    = 200000
+    max_interval_in_seconds = 300
+    max_staleness_prefix    = 100000
   }
 
   geo_location {
