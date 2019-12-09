@@ -33,14 +33,14 @@ resource "azurerm_cosmosdb_account" "urbannoise-db-account" {
 
 resource "azurerm_cosmosdb_mongo_database" "urban-noise-db" {
   name                = "urban-noise-db"
-  resource_group_name = "${azurerm_cosmosdb_account.urbannoise-db-account-rg.resource_group_name}"
-  account_name        = "${azurerm_cosmosdb_account.urbannoise-db-account-rg.name}"
+  resource_group_name = "${azurerm_cosmosdb_account.urbannoise-db-account.resource_group_name}"
+  account_name        = "${azurerm_cosmosdb_account.urbannoise-db-account.name}"
 }
 
 resource "azurerm_cosmosdb_mongo_collection" "generic-components-collection" {
   name                = "generic-components"
-  resource_group_name = "${data.azurerm_cosmosdb_account.urbannoise-db-account-rg.resource_group_name}"
-  account_name        = "${data.azurerm_cosmosdb_account.urbannoise-db-account-rg.name}"
+  resource_group_name = "${data.azurerm_cosmosdb_account.urbannoise-db-account.resource_group_name}"
+  account_name        = "${data.azurerm_cosmosdb_account.urbannoise-db-account.name}"
   database_name       = "${azurerm_cosmosdb_mongo_database.urban-noise-db.name}"
 
   default_ttl_seconds = "777"
