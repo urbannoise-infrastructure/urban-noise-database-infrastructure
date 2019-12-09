@@ -1,3 +1,7 @@
+provider "azurerm" {
+  version = "=1.38.0"
+}
+
 resource "azurerm_resource_group" "urban_noise_rg" {
   name     = "urbannoise-db-account"
   location = "West Europe"
