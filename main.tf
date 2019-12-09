@@ -3,19 +3,38 @@ provider "azurerm" {
 }
 
 resource "azurerm_resource_group" "urban_noise_rg" {
-  name     = "urbannoise-db-account"
+  name     = "urbannoise-db-account-rg"
   location = "West Europe"
 }
 
-data "azurerm_cosmosdb_account" "urbannoise-db-account-rg" {
-  name                = "${azurerm_resource_group.urban_noise_rg.name}"
+resource "azurerm_cosmosdb_account" "urbannoise-db-account" {
+  name                = "urbannoise-db-account"
   resource_group_name = "${azurerm_resource_group.urban_noise_rg.name}"
+  location            = "${azurerm_resource_group.urban_noise_rg.location}"
+  offer_type          = "Standard"
+  kind                = "MongoDB"
+
+  consistency_policy {
+    consistency_level       = "BoundedStaleness"
+    max_interval_in_seconds = 10
+    max_staleness_prefix    = 200
+  }
+
+  geo_location {
+    location          = "North Europe"
+    failover_priority = 1
+  }
+
+  geo_location {
+  location            = "${azurerm_resource_group.urban_noise_rg.location}"
+    failover_priority = 0
+  }
 }
 
 resource "azurerm_cosmosdb_mongo_database" "urban-noise-db" {
   name                = "urban-noise-db"
-  resource_group_name = "${data.azurerm_cosmosdb_account.urbannoise-db-account-rg.resource_group_name}"
-  account_name        = "${data.azurerm_cosmosdb_account.urbannoise-db-account-rg.name}"
+  resource_group_name = "${azurerm_cosmosdb_account.urbannoise-db-account-rg.resource_group_name}"
+  account_name        = "${azurerm_cosmosdb_account.urbannoise-db-account-rg.name}"
 }
 
 resource "azurerm_cosmosdb_mongo_collection" "generic-components-collection" {
